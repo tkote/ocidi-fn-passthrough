@@ -22,8 +22,8 @@ def process(df: pandas.DataFrame) -> str:
     return df.to_json(orient='records')
 
 def handler(ctx, data: io.BytesIO = None):
-    print('<< OCIDI-PASSTHROUGH BEGIN >>')
     logger = logging.getLogger(__name__)
+    logger.info('<< OCIDI-PASSTHROUGH BEGIN >>')
 
     try:
         body = data.getvalue() # bytes
