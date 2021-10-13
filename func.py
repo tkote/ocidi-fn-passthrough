@@ -3,9 +3,7 @@ import json
 import logging
 import base64
 import pandas
-
 from fdk import response
-
 
 """
 Request:                          // JSON String
@@ -16,11 +14,12 @@ Request:                          // JSON String
 
 Response:                         // JSON String
 {
-
      "records"                    // dataframe -> JSON String
-
 } 
 """
+
+def process(df: pandas.DataFrame) -> str:
+    return df.to_json(orient='records')
 
 def handler(ctx, data: io.BytesIO = None):
     print('<< OCIDI-PASSTHROUGH BEGIN >>')
@@ -31,12 +30,12 @@ def handler(ctx, data: io.BytesIO = None):
         #logger.info(f'Request:\n{ body.decode("utf-8") }')
 
         request = json.loads(body) # json
-        data = base64.b64decode(request.get("data")).decode() # json str
-        logger.info(f'Data:\n{ data }')
+        rows = base64.b64decode(request.get("data")).decode() # json str
+        logger.info(f'Data:\n{ rows }')
         logger.info(f'Parameters: { request.get("parameters") }')
 
-        df = pandas.read_json(data, lines=True)
-        result = df.to_json(orient='records')
+        df = pandas.read_json(rows, lines=True)
+        result = process(df)
 
         logger.info(f'Response:\n{result}')
 
