@@ -24,31 +24,28 @@ Response:                         // JSON String
 
 def handler(ctx, data: io.BytesIO = None):
     print('<< OCIDI-PASSTHROUGH BEGIN >>')
+    logger = logging.getLogger(__name__)
 
     try:
-        #logger = logging.getLogger()
-        bodystr = data.getvalue().decode('utf-8')
-        print('[REQUEST]')
-        print(bodystr)
+        body = data.getvalue() # bytes
+        #logger.info(f'Request:\n{ body.decode("utf-8") }')
 
-        body = json.loads(data.getvalue()) # json
+        request = json.loads(body) # json
+        data = base64.b64decode(request.get("data")).decode() # json str
+        logger.info(f'Data:\n{ data }')
+        logger.info(f'Parameters: { request.get("parameters") }')
 
-        input_data = base64.b64decode(body.get("data")).decode() # json str
+        df = pandas.read_json(data, lines=True)
+        result = df.to_json(orient='records')
 
-        print(f'Data: {input_data}')
+        logger.info(f'Response:\n{result}')
 
-        df = pandas.read_json(input_data, lines=True)
-        str=df.to_json(orient='records')
-        print('[RESPONSE]')
-        print(str)
         return response.Response(
-            ctx, response_data=str, headers={"Content-Type": "application/json"}
+            ctx, 
+            response_data=result, 
+            headers={"Content-Type": "application/json"}
         )
 
-    except Exception as e:
-        print(e)
-        raise e
-
     finally:
-        print('<< OCIDI-PASSTHROUGH END >>')
+        logger.info('<< OCIDI-PASSTHROUGH END >>')
 
