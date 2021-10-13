@@ -1,0 +1,9 @@
+schema_version: 20180708
+name: ocidi-passthrough
+version: 0.0.9
+runtime: python3.8.5
+entrypoint: /python/bin/fdk /function/func.py handler
+memory: 256
+timeout: 300
+config:
+  KEY: VALUE
