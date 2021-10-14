@@ -19,6 +19,7 @@ Response:                         // JSON String
 """
 
 def process(df: pandas.DataFrame) -> str:
+    #df['lastname'] = df['lastname'].apply(lambda x: str(x).upper())
     return df.to_json(orient='records')
 
 def handler(ctx, data: io.BytesIO = None):
