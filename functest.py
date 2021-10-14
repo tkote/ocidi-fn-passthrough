@@ -13,11 +13,11 @@ async def test_parse_request_without_data():
         {"firstname":"David","lastname":"Paich","secret_id_field":"58e25c06-6011-30b4-59e8-d1647eed49f1"}
     ]
     parameters = {"param1" : "param1value"}
-    data = ''
+    data = []
     for row in rows:
-        data = data + json.dumps(row) + '\n'
+        data.append(json.dumps(row) + '\n')
     request = {
-        "data" : base64.b64encode(data.encode('utf-8')).decode('utf-8'),
+        "data" : base64.b64encode(''.join(data).encode('utf-8')).decode('utf-8'),
         "parameters" : parameters
     }
     input_content = io.BytesIO(json.dumps(request).encode("utf-8"))
