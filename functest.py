@@ -7,7 +7,7 @@ import func
 
 
 @pytest.mark.asyncio
-async def test_parse_request_without_data():
+async def test_request():
     rows = [
         {"firstname":"James","lastname":"Brown","secret_id_field":"0927e5a8-9097-4cad-a7fa-b6167184c744"},
         {"firstname":"David","lastname":"Paich","secret_id_field":"58e25c06-6011-30b4-59e8-d1647eed49f1"}
