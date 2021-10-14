@@ -1,6 +1,5 @@
 
 ```
-$ pytest -s functest.py
 $ pytest -s functest.py 
 ================================= test session starts ==================================
 platform linux -- Python 3.6.8, pytest-5.4.3, py-1.10.0, pluggy-0.13.1
